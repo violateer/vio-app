@@ -1,5 +1,6 @@
 import Koa from 'koa';
 import Router from 'koa-router';
+import 'colors';
 import dotenv from 'dotenv';
 import bodyParser from 'koa-bodyparser';
 import morgan from 'morgan';
@@ -18,5 +19,5 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.listen(port, () => {
-    console.log(`服务器正在${port}端口运行`);
+    console.log(`服务器正在${port}端口运行`.green.underline);
 });
