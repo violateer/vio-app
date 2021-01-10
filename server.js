@@ -4,8 +4,10 @@ import 'colors';
 import dotenv from 'dotenv';
 import bodyParser from 'koa-bodyparser';
 import morgan from 'morgan';
+import connectDB from './config/db.js';
 
 dotenv.config();
+await connectDB();
 
 const app = new Koa();
 const router = new Router();

@@ -11,10 +11,11 @@
     "server": "nodemon backend/server.js",
     "client": "yarn --cwd frontend start",
     "dev": "concurrently \"yarn server\" \"yarn client\"",
-    "data:insert": "node backend/seeder",
-    "data:destroy": "node backend/seeder -d"
+    "data:insert": "node seeder",
+    "data:destroy": "node seeder -d"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "dotenv": "^8.2.0",
     "koa": "^2.13.1",
