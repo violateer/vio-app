@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import 'colors';
 import dotenv from 'dotenv';
 import connectDB from './config/db.js';
@@ -7,7 +6,7 @@ import users from './data/users.js';
 import articles from './data/articles.js';
 // 引入模板
 import Article from './models/articleModel.js';
-import User from './models/UserModel.js';
+import User from './models/userModel.js';
 
 dotenv.config();
 await connectDB();
