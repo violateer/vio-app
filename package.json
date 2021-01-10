@@ -8,9 +8,7 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon server.js",
-    "server": "nodemon backend/server.js",
-    "client": "yarn --cwd frontend start",
-    "dev": "concurrently \"yarn server\" \"yarn client\"",
+    "serve": "nodemon --exec babel-node --presets env server.js",
     "data:insert": "node seeder",
     "data:destroy": "node seeder -d"
   },
@@ -21,8 +19,7 @@
     "koa": "^2.13.1",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^10.0.0",
-    "mongoose": "^5.11.11",
-    "morgan": "^1.10.0"
+    "mongoose": "^5.11.11"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
