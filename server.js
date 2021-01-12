@@ -20,7 +20,21 @@ const port = process.env.PORT || 5000;
 const __dirname = path.resolve();
 app.use(staticFiles(path.join(__dirname, 'static')));
 // 处理跨域
-app.use(cors());
+// app.use(cors());
+app.use(function (ctx, next) {
+    ctx.set({
+        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        'Access-Control-Allow-Headers': 'Content-Type,Content-Length, Authorization, Accept,X-Requested-With',
+        'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE,OPTIONS',
+        'X-Powered-By': ' 3.2.1'
+    });
+    if (ctx.method == 'OPTIONS') {
+        // 让options请求快速返回
+        ctx.status = 200;
+    } else {
+        next();
+    }
+});
 // 解析请求体
 app.use(bodyParser());
 // 连接数据库
