@@ -1,9 +1,11 @@
 import Koa from 'koa';
 import Router from 'koa-router';
+import path from 'path';
 import 'colors';
 import dotenv from 'dotenv';
 import bodyParser from 'koa-bodyparser';
 import cors from 'koa-cors';
+import staticFiles from 'koa-static';
 import connectDB from './config/db.js';
 // 引入路由
 import articles from './routes/api/articles.js';
@@ -14,6 +16,9 @@ const app = new Koa();
 const router = new Router();
 const port = process.env.PORT || 5000;
 
+// 设置静态资源文件夹
+const __dirname = path.resolve();
+app.use(staticFiles(path.join(__dirname, 'static')));
 // 处理跨域
 app.use(cors());
 // 解析请求体
@@ -29,5 +34,5 @@ router.use('/api/articles', articles);
 app.use(router.routes()).use(router.allowedMethods());
 
 app.listen(port, () => {
-  console.log(`服务器正在${port}端口运行`.green.underline);
+    console.log(`服务器正在${port}端口运行`.green.underline);
 });

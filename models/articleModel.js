@@ -30,6 +30,9 @@ const articleSchema = new Schema({
     content: {
         type: String,
         required: true
+    },
+    labels: {
+        type: Array
     }
 }, { timestamps: true });
 
