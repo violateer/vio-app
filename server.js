@@ -4,7 +4,6 @@ import path from 'path';
 import 'colors';
 import dotenv from 'dotenv';
 import bodyParser from 'koa-bodyparser';
-import cors from 'koa-cors';
 import staticFiles from 'koa-static';
 import connectDB from './config/db.js';
 // 引入路由
@@ -20,8 +19,7 @@ const port = process.env.PORT || 5000;
 const __dirname = path.resolve();
 app.use(staticFiles(path.join(__dirname, 'static')));
 // 处理跨域
-// app.use(cors());
-app.use(function (ctx, next) {
+app.use(async (ctx, next) => {
     ctx.set({
         'Access-Control-Allow-Origin': 'http://localhost:3000',
         'Access-Control-Allow-Headers': 'Content-Type,Content-Length, Authorization, Accept,X-Requested-With',
@@ -30,9 +28,9 @@ app.use(function (ctx, next) {
     });
     if (ctx.method == 'OPTIONS') {
         // 让options请求快速返回
-        ctx.status = 200;
+        ctx.body = 200;
     } else {
-        next();
+        await next();
     }
 });
 // 解析请求体
