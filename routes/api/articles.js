@@ -28,18 +28,17 @@ router.get('/', async (ctx) => {
         ctx.body = {
             data: {
                 articles,
-                code: 200
+                msg: '查询成功'
             },
-            msg: '查询成功'
+            code: 200
         };
     } else {
         ctx.status = 404;
         ctx.body = {
             data: {
-                msg: 'NOT FOUND',
-                code: 404
+                msg: 'NOT FOUND'
             },
-            msg: '未查询到任何文章'
+            code: 404
         };
     }
 });
@@ -51,13 +50,13 @@ router.get('/', async (ctx) => {
  **/
 router.post('/', async ctx => {
     const file = ctx.request.files;
-    ctx.status = 200;
+    ctx.status = 201;
     ctx.body = {
         data: {
-            files: file,
-            code: 200
+            files: JSON.stringify(file),
+            msg: '上传成功'
         },
-        msg: '上传成功'
+        code: 201
     };
 });
 
