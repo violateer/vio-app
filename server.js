@@ -7,6 +7,7 @@ import bodyParser from 'koa-bodyparser';
 import koaBody from 'koa-body';
 import staticFiles from 'koa-static';
 import connectDB from './config/db.js';
+import { getUploadDirname, checkDirExist, getUploadFileExt, getUploadFileName } from './config/tools.js';
 // 引入路由
 import articles from './routes/api/articles.js';
 
@@ -46,7 +47,17 @@ app.use(koaBody({
         hash: false,
         maxFieldsSize: 2 * 1024 * 1024, // 文件上传大小
         onFileBegin: (name, file) => { // 文件上传前的设置
-        
+            // 获取文件后缀
+            const ext = getUploadFileExt(file.name);
+            // 最终要保存到的文件夹目录
+            const dir = path.join(__dirname, `static/markdowns/${getUploadDirname()}`);
+            // 检查文件夹是否存在如果不存在则新建文件夹
+            checkDirExist(dir);
+            // 重新覆盖 file.path 属性
+            file.path = `${dir}/${getUploadFileName(file.name, ext)}`;
+        },
+        onError: (err) => {
+            console.log(err);
         }
     }
 }));

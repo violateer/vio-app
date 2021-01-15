@@ -50,10 +50,11 @@ router.get('/', async (ctx) => {
  * @access 接口是公开的
  **/
 router.post('/', async ctx => {
+    const file = ctx.request.files;
     ctx.status = 200;
     ctx.body = {
         data: {
-            files: ctx.request.files,
+            files: file,
             code: 200
         },
         msg: '上传成功'
