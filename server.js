@@ -23,7 +23,7 @@ app.use(staticFiles(path.join(__dirname, 'static')));
 // 处理跨域
 app.use(async (ctx, next) => {
     ctx.set({
-        'Access-Control-Allow-Origin': 'http://localhost:3000',
+        'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Content-Type,Content-Length, Authorization, Accept,X-Requested-With',
         'Access-Control-Allow-Methods': 'PUT,POST,GET,DELETE,OPTIONS',
         'X-Powered-By': ' 3.2.1'
@@ -50,7 +50,7 @@ app.use(koaBody({
             // 获取文件后缀
             const ext = getUploadFileExt(file.name);
             // 最终要保存到的文件夹目录
-            const dir = path.join(__dirname, 'static', 'markdowns', `${getUploadDirname()}`);
+            const dir = path.join('static', 'markdowns', `${getUploadDirname()}`);
             // 检查文件夹是否存在如果不存在则新建文件夹
             checkDirExist(dir);
             // 重新覆盖 file.path 属性

@@ -1,4 +1,8 @@
 import Router from 'koa-router';
+import fs from 'fs';
+import marked from 'marked';
+
+// 引入模板
 import Article from '../../models/articleModel.js';
 import User from '../../models/userModel.js';
 
@@ -51,10 +55,11 @@ router.get('/', async (ctx) => {
 router.post('/', async ctx => {
     const file = ctx.request.files;
     const { title, author } = JSON.parse(ctx.request.body.extraData);
+    const path = file.file.path.split('\\').splice(1).join('\\');
     const article = new Article({
         title,
         author,
-        md: file.file.path,
+        md: path,
         content: 'test'
     });
     try {
@@ -76,6 +81,37 @@ router.post('/', async ctx => {
             code: 500
         };
     }
+});
+
+/**
+ * @route Get api/articles/:folder/:date/:file
+ * @desc 获取文件接口地址
+ * @access 接口是公开的
+ **/
+router.get('/:folder/:date/:file', async ctx => {
+    const { folder, date, file } = ctx.params;
+    const path = `static/${folder}/${date}/${file}`;
+    const data = fs.readFileSync(path);
+    // fs.readFile(path, function (err, data) {
+    if (!data) {
+        ctx.status = 404;
+        ctx.body = {
+            data: {
+                msg: '文件不存在'
+            },
+            code: 404
+        };
+    } else {
+        ctx.status = 200;
+        ctx.body = {
+            data: {
+                article: data.toString(),
+                msg: '查询成功'
+            },
+            code: 200
+        };
+    }
+// });
 });
 
 export default router.routes();
