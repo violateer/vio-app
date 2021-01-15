@@ -10,10 +10,10 @@ const router = new Router();
  * @access 接口是公开的
  */
 router.get('/test', async (ctx) => {
-  ctx.status = 200;
-  ctx.body = {
-    msg: 'articles works....',
-  };
+    ctx.status = 200;
+    ctx.body = {
+        msg: 'articles works....'
+    };
 });
 
 /**
@@ -22,26 +22,42 @@ router.get('/test', async (ctx) => {
  * @access 接口是公开的
  **/
 router.get('/', async (ctx) => {
-  const articles = await Article.find({}).populate('user', 'name', User);
-  if (articles) {
+    const articles = await Article.find({}).populate('user', 'name', User);
+    if (articles) {
+        ctx.status = 200;
+        ctx.body = {
+            data: {
+                articles,
+                code: 200
+            },
+            msg: '查询成功'
+        };
+    } else {
+        ctx.status = 404;
+        ctx.body = {
+            data: {
+                msg: 'NOT FOUND',
+                code: 404
+            },
+            msg: '未查询到任何文章'
+        };
+    }
+});
+
+/**
+ * @route Post api/articles
+ * @desc 上传文件接口地址
+ * @access 接口是公开的
+ **/
+router.post('/', async ctx => {
     ctx.status = 200;
     ctx.body = {
-      data: {
-        articles,
-        code: 200,
-      },
-      msg: '查询成功',
+        data: {
+            files: ctx.request.files,
+            code: 200
+        },
+        msg: '上传成功'
     };
-  } else {
-    ctx.status = 404;
-    ctx.body = {
-      data: {
-        msg: 'NOT FOUND',
-        code: 404,
-      },
-      msg: '未查询到任何文章',
-    };
-  }
 });
 
 export default router.routes();

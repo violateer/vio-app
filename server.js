@@ -4,6 +4,7 @@ import path from 'path';
 import 'colors';
 import dotenv from 'dotenv';
 import bodyParser from 'koa-bodyparser';
+import koaBody from 'koa-body';
 import staticFiles from 'koa-static';
 import connectDB from './config/db.js';
 // 引入路由
@@ -35,6 +36,20 @@ app.use(async (ctx, next) => {
 });
 // 解析请求体
 app.use(bodyParser());
+// koaBody
+app.use(koaBody({
+    multipart: true, // 支持文件上传
+    encoding: 'gzip',
+    formidable: {
+        uploadDir: path.join(__dirname, 'static/markdowns/'), // 设置文件上传目录
+        keepExtensions: true,    // 保持文件的后缀
+        hash: false,
+        maxFieldsSize: 2 * 1024 * 1024, // 文件上传大小
+        onFileBegin: (name, file) => { // 文件上传前的设置
+        
+        }
+    }
+}));
 // 连接数据库
 await connectDB();
 // 处理跨域
