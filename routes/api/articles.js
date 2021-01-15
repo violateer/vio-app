@@ -50,14 +50,32 @@ router.get('/', async (ctx) => {
  **/
 router.post('/', async ctx => {
     const file = ctx.request.files;
-    ctx.status = 201;
-    ctx.body = {
-        data: {
-            files: JSON.stringify(file),
-            msg: '上传成功'
-        },
-        code: 201
-    };
+    const { title, author } = JSON.parse(ctx.request.body.extraData);
+    const article = new Article({
+        title,
+        author,
+        md: file.file.path,
+        content: 'test'
+    });
+    try {
+        await article.save();
+        ctx.status = 201;
+        ctx.body = {
+            data: {
+                files: JSON.stringify(file),
+                msg: '上传成功'
+            },
+            code: 201
+        };
+    } catch (err) {
+        ctx.status = 500;
+        ctx.body = {
+            data: {
+                msg: '上传失败'
+            },
+            code: 500
+        };
+    }
 });
 
 export default router.routes();

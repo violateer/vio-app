@@ -7,7 +7,8 @@ const articleSchema = new Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref: 'User'
+        ref: 'User',
+        default:'600153de2dcbb2109ca38315'
     },
     title: {
         type: String,
@@ -28,6 +29,10 @@ const articleSchema = new Schema({
         default: 0
     },
     content: {
+        type: String,
+        required: true
+    },
+    md: {
         type: String,
         required: true
     },
