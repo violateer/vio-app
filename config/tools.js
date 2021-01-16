@@ -1,4 +1,3 @@
-import path from 'path';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -42,3 +41,20 @@ export function getUploadFileName (name, ext) {
     const uuid = uuidv4();
     return `${trueName}[${uuid}].${ext}`;
 }
+
+/**
+ * @param {string} path
+ * @description promise封装fs.readFile
+ */
+export function pReadFile (path) {
+    return new Promise(function (resolve, reject) {
+        fs.readFile(path, function (err, data) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(data);
+            }
+        });
+    });
+}
+

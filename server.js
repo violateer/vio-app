@@ -10,6 +10,7 @@ import connectDB from './config/db.js';
 import { getUploadDirname, checkDirExist, getUploadFileExt, getUploadFileName } from './config/tools.js';
 // 引入路由
 import articles from './routes/api/articles.js';
+import { errHandler } from './middles/errorHandler.js';
 
 dotenv.config();
 
@@ -63,7 +64,8 @@ app.use(koaBody({
 }));
 // 连接数据库
 await connectDB();
-// 处理跨域
+// 处理对应错误码
+app.use(errHandler);
 
 // 配置路由地址
 router.use('/api/articles', articles);
