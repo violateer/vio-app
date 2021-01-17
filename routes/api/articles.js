@@ -53,12 +53,14 @@ router.get('/', async (ctx) => {
 router.post('/', async ctx => {
     const file = ctx.request.files;
     const { title, author } = JSON.parse(ctx.request.body.extraData);
+    const labels = ctx.request.body.labels.split(',');
     const path = '\\' + file.file.path.split('\\').splice(1).join('\\');
     const article = new Article({
         title,
         author,
         md: path,
-        content: 'test'
+        content: 'test',
+        labels
     });
     try {
         await article.save();
