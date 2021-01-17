@@ -55,11 +55,24 @@ router.post('/', async ctx => {
     const { title, author } = JSON.parse(ctx.request.body.extraData);
     const labels = ctx.request.body.labels.split(',');
     const path = '\\' + file.file.path.split('\\').splice(1).join('\\');
+    let content;
+    await pReadFile(file.file.path).then(data => {
+        content = data.toString();
+        if (!content) {
+            fs.unlink(file.file.path, err => {
+                console.log(err);
+            });
+        }
+    }).catch(err => {
+        fs.unlink(file.file.path, err => {
+            console.log(err);
+        });
+    });
     const article = new Article({
         title,
         author,
         md: path,
-        content: 'test',
+        content,
         labels
     });
     try {
@@ -96,10 +109,12 @@ router.get('/:id', async ctx => {
         return;
     }
     const path = 'static' + article.md.split('\\').slice(0).join('/');
+    const articleConf = article;
     await pReadFile(path).then(data => {
         ctx.body = {
             data: {
-                article: data.toString(),
+                articleConf,
+                mdContent: data.toString(),
                 msg: '查询成功'
             },
             code: 200

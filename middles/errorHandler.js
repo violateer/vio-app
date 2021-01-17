@@ -3,6 +3,7 @@
  */
 const errCode = {
     404: 'NOT FOUND',
+    403: 'FORBIDDEN',
     500: 'SERVER ERROR',
     default: '未定义的错误码'
 };
