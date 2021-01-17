@@ -84,13 +84,18 @@ router.post('/', async ctx => {
 });
 
 /**
- * @route Get api/articles/:folder/:date/:file
+ * @route Get api/articles/:id
  * @desc 获取文件接口地址
  * @access 接口是公开的
  **/
-router.get('/:folder/:date/:file', async ctx => {
-    const { folder, date, file } = ctx.params;
-    const path = `static/${folder}/${date}/${file}`;
+router.get('/:id', async ctx => {
+    const { id } = ctx.params;
+    const article = await Article.findById(id);
+    if (!article) {
+        ctx.status = 404;
+        return;
+    }
+    const path = 'static' + article.md.split('\\').slice(0).join('/');
     await pReadFile(path).then(data => {
         ctx.body = {
             data: {
@@ -101,12 +106,6 @@ router.get('/:folder/:date/:file', async ctx => {
         };
     }).catch(err => {
         ctx.status = 404;
-        ctx.body = {
-            data: {
-                msg: '文件不存在'
-            },
-            code: 404
-        };
     });
 });
 
